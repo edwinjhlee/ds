@@ -1,0 +1,33 @@
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+//    repositories {
+//       mavenCentral()
+//    }
+
+repositories {
+	maven{ url 'http://maven.oschina.net/content/groups/public/'}
+}
+
+dependencies {
+   // compile 'org.apache.zookeeper:zookeeper:3.4.0'
+    compile 'org.apache.curator:curator-recipes:2.5.0'
+	testCompile 'junit:junit:4.8.2'
+}
+
+version = '1.0'
+
+task taskJar(type:Jar, dependsOn: compileJava) {
+	from 'build/classes'
+	destinationDir = file('build/libs')
+}
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'app.main'
+	}
+}
+
+//mainClassName='test.ABC'
+//mainClassName='test.TestApp'
