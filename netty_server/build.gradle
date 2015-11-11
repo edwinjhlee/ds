@@ -1,6 +1,7 @@
 
 apply plugin: 'java'
 apply plugin: 'scala'
+
 apply plugin: 'eclipse'
 
 //    repositories {
@@ -13,10 +14,24 @@ repositories {
 
 dependencies {
    // compile 'org.apache.zookeeper:zookeeper:3.4.0'
+    compile 'org.scala-lang:scala-library:2.11.1'
     compile 'io.netty:netty-all:4.0.4.Final'
     compile 'org.apache.curator:curator-recipes:2.5.0'
 	testCompile 'junit:junit:4.8.2'
 }
+
+/*
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala']
+        }
+        java {
+        	srcDirs = ['src/main/java']
+        }
+    }
+}
+*/
 
 version = '1.0'
 
@@ -27,9 +42,43 @@ task taskJar(type:Jar, dependsOn: compileJava) {
 
 jar {
 	manifest {
-		attributes 'Main-Class': 'app.main'
+//		attributes 'Main-Class': 'app.main'
 	}
+
+	destinationDir = file('build/libs')
 }
+
+task fatJar(type: Jar) {
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+        	'Implementation-Version': version,
+        	'Main-Class': 'el.net.Test'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+/*
+eclipse.classpath.file.withXml { provider ->
+  def attributes = [kind: "con", path: "org.scala-ide.sdt.launching.SCALA_CONTAINER"]
+  provider.asNode().appendNode("classpathentry", attributes)
+}
+*/
+
+// eclipse.classpath.containers += ["org.scala-ide.sdt.launching.SCALA_CONTAINER"]
 
 //mainClassName='test.ABC'
 //mainClassName='test.TestApp'
+//mainClassName='el.net.Test'
+
+task run(type:JavaExec, dependsOn:'classes') {
+	//description 'Running'
+	classpath = sourceSets.main.runtimeClasspath
+	println(classpath)
+	if(project.hasProperty('main')){
+        main = project.getProperty("main")
+    }
+
+}
+
