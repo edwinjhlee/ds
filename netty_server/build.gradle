@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
    // compile 'org.apache.zookeeper:zookeeper:3.4.0'
+    compile 'io.netty:netty-all:4.0.4.Final'
     compile 'org.apache.curator:curator-recipes:2.5.0'
 	testCompile 'junit:junit:4.8.2'
 }

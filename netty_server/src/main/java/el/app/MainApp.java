@@ -32,6 +32,10 @@ public class MainApp implements Runnable, ShutdownHooks {
 		}
 	}
 
+	public boolean isRunning(){
+		return keepRunning;
+	}
+
 	public void work(){
 		for (Runnable job : jobs){
 			job.run();

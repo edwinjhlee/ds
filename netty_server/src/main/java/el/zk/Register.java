@@ -20,17 +20,12 @@ public class Register {
 		return this.zkclient.getClient();
 	}
 
-	public void register(String serverName) {
-		try {
-			Stat stat = this.getClient().checkExists().forPath(NODE_DIR);
-			if (null == stat) {
-				this.getClient().create().forPath(NODE_DIR);
-			}
-			this.getClient().create().forPath(NODE_DIR + "/" + serverName);
-		} catch (Exception e) {
-			// log
+	public void register(String serverName) throws Exception{
+		Stat stat = this.getClient().checkExists().forPath(NODE_DIR);
+		if (null == stat) {
+			this.getClient().create().forPath(NODE_DIR);
 		}
-
+		this.getClient().create().forPath(NODE_DIR + "/" + serverName);
 	}
 
 	public List<String> getAllNodes() throws Exception{
